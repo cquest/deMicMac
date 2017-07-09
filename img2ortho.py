@@ -2,7 +2,7 @@ import subprocess
 import csv
 from pyproj import Proj,transform
 
-print("Extract GPS data from EXIF")
+print("MicMac: XifGps2Txt > Extract GPS data from EXIF")
 subprocess.call("mm3d XifGps2Txt '.*[JPG|jpg]' > img2ortho.log", shell=True)
 
 # WGS84 proj to local
@@ -26,13 +26,13 @@ subprocess.call('mm3d OriConvert OriTxtInFile LocalCoordinatesFromExif.txt gps N
 
 print("Micmac: Tapioca > search for similarities between images")
 subprocess.call('mm3d Tapioca MulScale .*.JPG 300 1200 ExpTxt=0 >> img2ortho.log', shell=True)
-print("Micmac: Tapas")
+print("Micmac: Tapas > find relative position/orientation between images")
 subprocess.call('mm3d Tapas RadialBasic .*.JPG Out=Arbitrary ExpTxt=0 >> img2ortho.log', shell=True)
 print("Micmac: CenterBascule > convert relative position to local projection")
 subprocess.call('mm3d CenterBascule ".*.JPG" Arbitrary gps local >> img2ortho.log', shell=True)
 print("Micmac: Malt")
 subprocess.call('mm3d Malt Ortho .*.JPG local NbVI=2 DirTA=TA EZA=1 >> img2ortho.log', shell=True)
-print("Micmac: Tanwy")
+print("Micmac: Tawny")
 subprocess.call('mm3d Tawny Ortho-MEC-Malt/ Out=OrthoMosaique.tif >> img2ortho.log', shell=True)
 
 print("gdal_translate & final info")
